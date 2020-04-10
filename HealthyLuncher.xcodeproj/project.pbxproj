@@ -20,6 +20,7 @@
 		953473D02180CDDD00259553 /* LunchImageClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 953473CF2180CDDD00259553 /* LunchImageClassifier.mlmodel */; };
 		953473D12180CDF000259553 /* LunchDataTableClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 953473CC2180CD0D00259553 /* LunchDataTableClassifier.mlmodel */; };
 		953473D22180CDF200259553 /* LunchTextClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 953473CD2180CD0D00259553 /* LunchTextClassifier.mlmodel */; };
+		9589F0A724407D0F008A7F2E /* UpdatableLunchImageClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9589F0A624407D0F008A7F2E /* UpdatableLunchImageClassifier.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		953473CC2180CD0D00259553 /* LunchDataTableClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LunchDataTableClassifier.mlmodel; sourceTree = "<group>"; };
 		953473CD2180CD0D00259553 /* LunchTextClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LunchTextClassifier.mlmodel; sourceTree = "<group>"; };
 		953473CF2180CDDD00259553 /* LunchImageClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LunchImageClassifier.mlmodel; sourceTree = "<group>"; };
+		9589F0A624407D0F008A7F2E /* UpdatableLunchImageClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = UpdatableLunchImageClassifier.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 		953473CB2180CD0600259553 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9589F0A624407D0F008A7F2E /* UpdatableLunchImageClassifier.mlmodel */,
 				953473CF2180CDDD00259553 /* LunchImageClassifier.mlmodel */,
 				953473CC2180CD0D00259553 /* LunchDataTableClassifier.mlmodel */,
 				953473CD2180CD0D00259553 /* LunchTextClassifier.mlmodel */,
@@ -207,6 +210,7 @@
 				95226D82217A00BD00C58139 /* ImageViewController.swift in Sources */,
 				95226D80217A00BD00C58139 /* AppDelegate.swift in Sources */,
 				951D14BE217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
+				9589F0A724407D0F008A7F2E /* UpdatableLunchImageClassifier.mlmodel in Sources */,
 				953473D02180CDDD00259553 /* LunchImageClassifier.mlmodel in Sources */,
 				953473D12180CDF000259553 /* LunchDataTableClassifier.mlmodel in Sources */,
 				953473AA2180ACCD00259553 /* TextViewController.swift in Sources */,
