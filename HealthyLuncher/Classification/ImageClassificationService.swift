@@ -51,16 +51,12 @@ final class ImageClassificationService {
         return predict(for: featureValue)
     }
 
-    private func predict(for value: MLFeatureValue) -> String? {
-        if !hasMadeFirstPrediction {
-            hasMadeFirstPrediction = true
-
-            // Load the updated model the app saved on an earlier run, if available.
-            loadUpdatedModel()
-        }
-        return currentModel.predict(for: value)
-    }
-
+    /// Update the model with new results.
+    ///
+    /// - Parameters:
+    ///     - image: Image for which make a retraining.
+    ///     - label: Label for which to retrain the model.
+    ///     - completionHandler: A completion to be called once finished ratraining.
     func update(with image: UIImage,
                 for label: String,
                 completionHandler: @escaping () -> Void) {
@@ -85,6 +81,11 @@ final class ImageClassificationService {
         update(with: trainingData, completionHandler: completionHandler)
     }
 
+    /// Update the model with new results.
+    ///
+    /// - Parameters:
+    ///     - trainingData: Data for which to retrain model.
+    ///     - completionHandler: A completion to be called once finished ratraining.
     func update(with trainingData: MLBatchProvider,
                        completionHandler: @escaping () -> Void) {
         let usingUpdatedModel = updatedImageClassifier != nil
@@ -99,37 +100,29 @@ final class ImageClassificationService {
         let progressHandler = { (context: MLUpdateContext) in
             switch context.event {
             case .trainingBegin:
-              // This is the first event you receive, just before training actually
-              // starts. At this point, context.metrics is empty.
               print("Training begin")
-
-            case .miniBatchEnd:
-              // This event is triggered after each mini-batch. You can get the
-              // index of this batch and the training loss from context.metrics.
-              let batchIndex = context.metrics[.miniBatchIndex] as! Int
-              let batchLoss = context.metrics[.lossValue] as! Double
-              print("Mini batch \(batchIndex), loss: \(batchLoss)")
-
             case .epochEnd:
-              print("eposh ended")
-
+              print("epoch ended")
             default:
-                print("Unknown event")
+                print("Untracked event")
             }
         }
+
         let handlers = MLUpdateProgressHandlers(
             forEvents: [.trainingBegin, .miniBatchEnd, .epochEnd],
             progressHandler: progressHandler,
             completionHandler: completionHandler)
-        print("updating")
+
+        print("Update started")
+
         let parameters: [MLParameterKey: Any] = [
            .epochs: 1,
            .miniBatchSize: 1,
          ]
-
          let config = MLModelConfiguration()
          config.computeUnits = .all
          config.parameters = parameters
+
         do {
             updateTask = try MLUpdateTask(forModelAt: currentModelURL,
                                                trainingData: trainingData,
@@ -143,13 +136,20 @@ final class ImageClassificationService {
     }
 
     func reset() {
-        // Clear the updated Drawing Classifier.
         updatedImageClassifier = nil
-
-        // Remove the updated model from its designated path.
         if FileManager.default.fileExists(atPath: updatedModelURL.path) {
             try? FileManager.default.removeItem(at: updatedModelURL)
         }
+    }
+
+    // MARK: - Private methods
+
+    private func predict(for value: MLFeatureValue) -> String? {
+        if !hasMadeFirstPrediction {
+            hasMadeFirstPrediction = true
+            loadUpdatedModel()
+        }
+        return currentModel.predict(for: value)
     }
 
     private func saveUpdatedModel(_ updateContext: MLUpdateContext) {
@@ -162,7 +162,6 @@ final class ImageClassificationService {
             try updatedModel.write(to: tempUpdatedModelURL)
             _ = try fileManager.replaceItemAt(updatedModelURL,
                                               withItemAt: tempUpdatedModelURL)
-
             print("Updated model saved to:\n\t\(updatedModelURL)")
         } catch let error {
             print("Could not save updated model to the file system: \(error)")
@@ -171,11 +170,8 @@ final class ImageClassificationService {
     }
 
     private func loadUpdatedModel() {
-        guard FileManager.default.fileExists(atPath: updatedModelURL.path) else {
-            return
-        }
-
-        guard let model = try? UpdatableLunchImageClassifier(contentsOf: updatedModelURL) else {
+        guard FileManager.default.fileExists(atPath: updatedModelURL.path),
+            let model = try? UpdatableLunchImageClassifier(contentsOf: updatedModelURL) else {
             return
         }
         updatedImageClassifier = model

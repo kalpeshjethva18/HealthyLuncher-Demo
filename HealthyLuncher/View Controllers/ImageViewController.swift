@@ -27,6 +27,8 @@ class ImageViewController: UIViewController {
         return picker
     }()
 
+    private var currentPrediction: Prediction?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         retrainModelButton.isHidden = true
@@ -38,9 +40,18 @@ class ImageViewController: UIViewController {
 
     @IBAction func retrainModel(_ sender: Any) {
         predictionLabel.textColor = .darkGray
+        var trainingLabel: String
+        switch currentPrediction {
+        case .healthy:
+            trainingLabel = Prediction.Constants.fastFoodClassLabel
+        case .fastFood:
+            trainingLabel = Prediction.Constants.healthyClassLabel
+        case .failed, .empty, .none:
+            predictionLabel.text = "Can't retrain"
+            return
+        }
         predictionLabel.text = "Retraining..."
-        
-        classificationService.update(with: imageView.image!, for: "healthy") { [weak self] in
+        classificationService.update(with: imageView.image!, for: trainingLabel) { [weak self] in
             self?.predictionLabel.text = "Finished retraining"
         }
     }
@@ -73,6 +84,7 @@ extension ImageViewController: UIImagePickerControllerDelegate, UINavigationCont
         retrainModelButton.isHidden = true
         let label = classificationService.predict(for: image)
         retrainModelButton.isHidden = false
-        updatePredictionLabel(with: Prediction(classLabel: label ?? "unknown") ?? Prediction.empty)
+        currentPrediction = Prediction(classLabel: label ?? "unknown") ?? Prediction.empty
+        updatePredictionLabel(with: currentPrediction!)
     }
 }

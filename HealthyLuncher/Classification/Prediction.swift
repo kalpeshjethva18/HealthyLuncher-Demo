@@ -10,6 +10,11 @@ import UIKit
 
 /// Types of a prediction result.
 enum Prediction {
+
+    enum Constants {
+        static let fastFoodClassLabel = "fast-food"
+        static let healthyClassLabel = "healthy"
+    }
     
     /// Healthy lunch.
     case healthy
@@ -28,9 +33,9 @@ enum Prediction {
     /// - Parameter classLabel: The identifier returned by a model.
    init?(classLabel: String) {
         switch classLabel {
-        case "fast-food":
+        case Constants.fastFoodClassLabel:
             self = .fastFood
-        case "healthy":
+        case Constants.healthyClassLabel:
             self = .healthy
         default:
             return nil
