@@ -12,11 +12,11 @@ import CoreML
 /// Service used for performing a classification of images by a ML model.
 final class ImageClassificationService {
 
-    var currentModel: UpdatableLunchImageClassifier {
+    private var currentModel: UpdatableLunchImageClassifier {
         updatedImageClassifier ?? defaultImageClassifier
     }
 
-    var imageConstraint: MLImageConstraint {
+    private var imageConstraint: MLImageConstraint {
         currentModel.imageConstraint
     }
 
@@ -61,6 +61,30 @@ final class ImageClassificationService {
         return currentModel.predict(for: value)
     }
 
+    func update(with image: UIImage,
+                for label: String,
+                completionHandler: @escaping () -> Void) {
+        var featureProviders = [MLFeatureProvider]()
+        let inputName = "image"
+        let outputName = "label"
+        let imageConstraint = currentModel.imageConstraint
+
+        let imageFeatureValue = try? MLFeatureValue(cgImage: image.cgImage!,
+                                                    constraint: imageConstraint)
+        let inputValue = imageFeatureValue
+        let outputValue = MLFeatureValue(string: label)
+
+        let dataPointFeatures: [String: MLFeatureValue] = [inputName: inputValue!,
+                                                            outputName: outputValue]
+
+         if let provider = try? MLDictionaryFeatureProvider(dictionary: dataPointFeatures) {
+             featureProviders.append(provider)
+         }
+
+        let trainingData = MLArrayBatchProvider(array: featureProviders)
+        update(with: trainingData, completionHandler: completionHandler)
+    }
+
     func update(with trainingData: MLBatchProvider,
                        completionHandler: @escaping () -> Void) {
         let usingUpdatedModel = updatedImageClassifier != nil
@@ -100,9 +124,7 @@ final class ImageClassificationService {
         print("updating")
         let parameters: [MLParameterKey: Any] = [
            .epochs: 1,
-           //.seed: 1234,
            .miniBatchSize: 1,
-           //.shuffle: false,
          ]
 
          let config = MLModelConfiguration()

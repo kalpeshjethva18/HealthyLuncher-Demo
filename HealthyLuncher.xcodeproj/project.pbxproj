@@ -71,7 +71,6 @@
 				953473CB2180CD0600259553 /* Models */,
 				95226D93217A169E00C58139 /* Prediction.swift */,
 				951D14BF217F7FB900DA50E3 /* ImageClassificationService.swift */,
-				9589F0A82440808E008A7F2E /* UpdatableLunchImageClassifier+Extensions.swift */,
 			);
 			path = Classification;
 			sourceTree = "<group>";
@@ -79,6 +78,7 @@
 		951D14C3217F8B3000DA50E3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				9589F0A82440808E008A7F2E /* UpdatableLunchImageClassifier+Extensions.swift */,
 				951D14BD217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift */,
 			);
 			path = Extensions;

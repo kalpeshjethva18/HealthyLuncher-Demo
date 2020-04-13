@@ -15,7 +15,8 @@ class ImageViewController: UIViewController {
     @IBOutlet weak var predictionLabel: UILabel!
     @IBOutlet weak var predictionView: UIView!
     @IBOutlet weak var retrainModelButton: UIButton!
-    
+    @IBOutlet weak var resetModelButton: UIButton!
+
     /// Service for classification of images.
     private let classificationService = ImageClassificationService()
     
@@ -29,12 +30,6 @@ class ImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         retrainModelButton.isHidden = true
-//        classificationService.completionHandler = { [weak self] prediction in
-//            DispatchQueue.main.async {
-//                self?.retrainModelButton.isHidden = false
-//                self?.updatePredictionLabel(with: prediction)
-//            }
-//        }
     }
     
     @IBAction func openPhoto(_ sender: Any) {
@@ -42,31 +37,24 @@ class ImageViewController: UIViewController {
     }
 
     @IBAction func retrainModel(_ sender: Any) {
+        predictionLabel.textColor = .darkGray
         predictionLabel.text = "Retraining..."
-        var featureProviders = [MLFeatureProvider]()
-
-         let inputName = "image"
-         let outputName = "label"
-        let imageConstraint = UpdatableLunchImageClassifier().imageConstraint
-
-        let imageFeatureValue = try? MLFeatureValue(cgImage: imageView.image!.cgImage!,
-                                                    constraint: imageConstraint)
-        let inputValue = imageFeatureValue
-        let outputValue = MLFeatureValue(string: "healthy")
-
-        let dataPointFeatures: [String: MLFeatureValue] = [inputName: inputValue!,
-                                                            outputName: outputValue]
-
-         if let provider = try? MLDictionaryFeatureProvider(dictionary: dataPointFeatures) {
-             featureProviders.append(provider)
-         }
-
-        let traininData = MLArrayBatchProvider(array: featureProviders)
-        classificationService.update(with: traininData) { [weak self] in
+        
+        classificationService.update(with: imageView.image!, for: "healthy") { [weak self] in
             self?.predictionLabel.text = "Finished retraining"
         }
     }
-    
+
+    @IBAction func resetModel(_ sender: Any) {
+        classificationService.reset()
+        let animation = CATransition()
+        animation.duration = 0.2
+        view.layer.add(animation, forKey: nil)
+        imageView.image = nil
+        predictionLabel.text = "Let's check if your lunch is healthy! 💪🏻🍎👇🏻"
+        predictionLabel.textColor = .lightGray
+        retrainModelButton.isHidden = true
+    }
 
     func updatePredictionLabel(with prediction: Prediction) {
         predictionLabel.text = prediction.description
