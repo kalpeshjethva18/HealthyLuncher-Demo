@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		951D14BE217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951D14BD217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift */; };
 		951D14C0217F7FB900DA50E3 /* ImageClassificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951D14BF217F7FB900DA50E3 /* ImageClassificationService.swift */; };
 		95226D80217A00BD00C58139 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95226D7F217A00BD00C58139 /* AppDelegate.swift */; };
 		95226D82217A00BD00C58139 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95226D81217A00BD00C58139 /* ImageViewController.swift */; };
@@ -25,7 +24,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		951D14BD217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+UIImageOrientation.swift"; sourceTree = "<group>"; };
 		951D14BF217F7FB900DA50E3 /* ImageClassificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClassificationService.swift; sourceTree = "<group>"; };
 		95226D7C217A00BD00C58139 /* HealthyLuncher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthyLuncher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95226D7F217A00BD00C58139 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				9589F0A82440808E008A7F2E /* UpdatableLunchImageClassifier+Extensions.swift */,
-				951D14BD217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -214,7 +211,6 @@
 				95226D82217A00BD00C58139 /* ImageViewController.swift in Sources */,
 				95226D80217A00BD00C58139 /* AppDelegate.swift in Sources */,
 				9589F0A92440808E008A7F2E /* UpdatableLunchImageClassifier+Extensions.swift in Sources */,
-				951D14BE217F7C0400DA50E3 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
 				953473D02180CDDD00259553 /* LunchImageClassifier.mlmodel in Sources */,
 				953473D12180CDF000259553 /* LunchDataTableClassifier.mlmodel in Sources */,
 				953473AA2180ACCD00259553 /* TextViewController.swift in Sources */,

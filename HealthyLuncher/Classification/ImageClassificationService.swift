@@ -24,8 +24,12 @@ final class ImageClassificationService {
 
     private let defaultImageClassifier = UpdatableLunchImageClassifier()
 
-    private let appDirectory = FileManager.default.urls(for: .applicationSupportDirectory,
-    in: .userDomainMask).first!
+    private let fileManager = FileManager.default
+
+    private var appDirectory: URL {
+        fileManager.urls(for: .applicationSupportDirectory,
+        in: .userDomainMask).first!
+    }
 
     private let defaultModelURL = UpdatableLunchImageClassifier.urlOfModelInThisBundle
 
@@ -93,6 +97,7 @@ final class ImageClassificationService {
         let completionHandler = { [weak self] (updatedContext: MLUpdateContext) in
             self?.saveUpdatedModel(updatedContext)
             self?.loadUpdatedModel()
+            self?.updateTask = nil
             DispatchQueue.main.async {
                 completionHandler()
             }
@@ -102,14 +107,14 @@ final class ImageClassificationService {
             case .trainingBegin:
               print("Training begin")
             case .epochEnd:
-              print("epoch ended")
+              print("Epoch ended")
             default:
-                print("Untracked event")
+                print("Unknown event")
             }
         }
 
         let handlers = MLUpdateProgressHandlers(
-            forEvents: [.trainingBegin, .miniBatchEnd, .epochEnd],
+            forEvents: [.trainingBegin, .epochEnd],
             progressHandler: progressHandler,
             completionHandler: completionHandler)
 
@@ -130,14 +135,15 @@ final class ImageClassificationService {
                                                progressHandlers: handlers)
             updateTask?.resume()
         } catch {
-            print(error)
+            print("Update failed with error: \(error)")
         }
 
     }
 
+    /// Reset a model to the initial state before updates.
     func reset() {
         updatedImageClassifier = nil
-        if FileManager.default.fileExists(atPath: updatedModelURL.path) {
+        if fileManager.fileExists(atPath: updatedModelURL.path) {
             try? FileManager.default.removeItem(at: updatedModelURL)
         }
     }
@@ -154,7 +160,6 @@ final class ImageClassificationService {
 
     private func saveUpdatedModel(_ updateContext: MLUpdateContext) {
         let updatedModel = updateContext.model
-        let fileManager = FileManager.default
         do {
             try fileManager.createDirectory(at: tempUpdatedModelURL,
                                             withIntermediateDirectories: true,
@@ -170,7 +175,7 @@ final class ImageClassificationService {
     }
 
     private func loadUpdatedModel() {
-        guard FileManager.default.fileExists(atPath: updatedModelURL.path),
+        guard fileManager.fileExists(atPath: updatedModelURL.path),
             let model = try? UpdatableLunchImageClassifier(contentsOf: updatedModelURL) else {
             return
         }
