@@ -28,7 +28,7 @@ enum Prediction {
     /// - Parameter classLabel: The identifier returned by a model.
    init?(classLabel: String) {
         switch classLabel {
-        case "fast food":
+        case "fast-food":
             self = .fastFood
         case "healthy":
             self = .healthy
