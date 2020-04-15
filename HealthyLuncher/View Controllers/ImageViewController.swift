@@ -43,7 +43,7 @@ class ImageViewController: UIViewController {
         var trainingLabel: String
         switch currentPrediction {
         case .healthy:
-            trainingLabel = Prediction.Constants.fastFoodClassLabel
+            trainingLabel = Prediction.Constants.fastFoodUpdatableClassLabel
         case .fastFood:
             trainingLabel = Prediction.Constants.healthyClassLabel
         case .failed, .empty, .none:
