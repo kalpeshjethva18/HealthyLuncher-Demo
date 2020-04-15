@@ -12,6 +12,8 @@ import CoreML
 /// Service used for performing a classification of images by a ML model.
 final class ImageClassificationService {
 
+    // MARK: - Private variables
+
     private var currentModel: UpdatableLunchImageClassifier {
         updatedImageClassifier ?? defaultImageClassifier
     }
@@ -43,6 +45,8 @@ final class ImageClassificationService {
     private var hasMadeFirstPrediction = false
 
     private var updateTask: MLUpdateTask?
+
+    // MARK: - Public methods
 
     /// Predict the result of image classification.
     ///
