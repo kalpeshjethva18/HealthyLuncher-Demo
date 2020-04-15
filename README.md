@@ -27,7 +27,7 @@ The third data table screen demonstrates the Tabular Data classification.
 </p>
 
 ## Tools
-- Xcode 10.1
+- Xcode 11.3
 
 ## Configuration
 - Clone the repository
