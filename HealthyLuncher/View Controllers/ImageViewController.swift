@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import CoreML
 
 class ImageViewController: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var predictionLabel: UILabel!
     @IBOutlet weak var predictionView: UIView!
-    
+    @IBOutlet weak var retrainModelButton: UIButton!
+    @IBOutlet weak var resetModelButton: UIButton!
+
     /// Service for classification of images.
     private let classificationService = ImageClassificationService()
     
@@ -24,19 +27,46 @@ class ImageViewController: UIViewController {
         return picker
     }()
 
+    private var currentPrediction: Prediction?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        classificationService.completionHandler = { [weak self] prediction in
-            DispatchQueue.main.async {
-                self?.updatePredictionLabel(with: prediction)
-            }
-        }
+        retrainModelButton.isHidden = true
     }
     
     @IBAction func openPhoto(_ sender: Any) {
         present(imagePickerController, animated: true)
     }
-    
+
+    @IBAction func retrainModel(_ sender: Any) {
+        predictionLabel.textColor = .darkGray
+        var trainingLabel: String
+        switch currentPrediction {
+        case .healthy:
+            trainingLabel = Prediction.Constants.fastFoodUpdatableClassLabel
+        case .fastFood:
+            trainingLabel = Prediction.Constants.healthyClassLabel
+        case .failed, .empty, .none:
+            predictionLabel.text = "Can't retrain"
+            return
+        }
+        predictionLabel.text = "Retraining..."
+        classificationService.update(with: imageView.image!, for: trainingLabel) { [weak self] in
+            self?.predictionLabel.text = "Finished retraining"
+        }
+    }
+
+    @IBAction func resetModel(_ sender: Any) {
+        classificationService.reset()
+        let animation = CATransition()
+        animation.duration = 0.2
+        view.layer.add(animation, forKey: nil)
+        imageView.image = nil
+        predictionLabel.text = "Let's check if your lunch is healthy! 💪🏻🍎👇🏻"
+        predictionLabel.textColor = .lightGray
+        retrainModelButton.isHidden = true
+    }
+
     func updatePredictionLabel(with prediction: Prediction) {
         predictionLabel.text = prediction.description
         predictionLabel.textColor = prediction.color
@@ -51,6 +81,10 @@ extension ImageViewController: UIImagePickerControllerDelegate, UINavigationCont
         imageView.image = image
         predictionLabel.text = "Classifying..."
         predictionLabel.textColor = .darkGray
-        classificationService.predict(for: image)
+        retrainModelButton.isHidden = true
+        let label = classificationService.predict(for: image)
+        retrainModelButton.isHidden = false
+        currentPrediction = Prediction(classLabel: label ?? "unknown") ?? Prediction.empty
+        updatePredictionLabel(with: currentPrediction!)
     }
 }
