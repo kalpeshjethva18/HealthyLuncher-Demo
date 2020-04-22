@@ -64,7 +64,7 @@ final class ImageClassificationService {
     /// - Parameters:
     ///     - image: Image for which make a retraining.
     ///     - label: Label for which to retrain the model.
-    ///     - completionHandler: A completion to be called once finished ratraining.
+    ///     - completionHandler: A completion to be called once finished retraining.
     func update(with image: UIImage,
                 for label: String,
                 completionHandler: @escaping () -> Void) {
