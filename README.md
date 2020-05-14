@@ -1,6 +1,6 @@
 # HealthyLuncher-Demo
 
-*HealthyLuncher* was created as a demo project for a [**CreateML blogpost**](https://www.netguru.co/codestories/createml-start-your-adventure-in-machine-learning-with-swift). 
+*HealthyLuncher* was created as a demo project for a [**CreateML blogpost**](https://www.netguru.co/codestories/createml-start-your-adventure-in-machine-learning-with-swift) and also used in [**On-Device Training with Core ML blog post**](https://www.netguru.com/codestories/on-device-training-with-core-ml-make-your-pancakes-healthy-again). 
 It uses:
 - **CoreML**
 - **NaturalLanguage**
@@ -26,8 +26,15 @@ The third data table screen demonstrates the Tabular Data classification.
 <img height="600" src="https://user-images.githubusercontent.com/18245585/47995946-3f661a00-e0f7-11e8-8fc5-bb6fc6bd1045.gif">
 </p>
 
+### On-Device Training
+The new feature from Core ML is added for images section - updating the model. You can find detailed information in [On-Device Training with Core ML blog post](https://www.netguru.com/codestories/on-device-training-with-core-ml-make-your-pancakes-healthy-again).
+<p align="center">
+<img height="600" src="https://lh3.googleusercontent.com/tV7dDiCGrs8VO1ZutkNNpQ3RIb893wpktko23C-INFaiNYehiKsz6PNr9oPPcRqcKj23skLPZm86yjPxhxDmTwpfYjZ1Vvk2j2EflYSY-d8C1wa2MfZW4Q0eSAIjywVWRgOmZBhY">
+</p>
+
+
 ## Tools
-- Xcode 10.1
+- Xcode 11.3
 
 ## Configuration
 - Clone the repository
